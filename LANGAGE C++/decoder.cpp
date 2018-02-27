@@ -1,48 +1,67 @@
-#include <iostream>
-#include <cstring>
+//entrée utilisateur dans la console en morse, puis écriture de la traduction en caractères dans MORSE.txt
+
+
+#include <stdio.h>
 #include <fstream>
-#include <string>
-#include <sstream>
-#include <stdio.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <fstream>
-#include "define.hpp"
+#include <sstream>
+#include <iostream>
+#include "SerialPort.h"
 using namespace std;
 
-std::string convert(std::string morse, std::string const morseCode[]);
+string convert(string morse, string const morseCode[]);
+int writetxt1(string texte);
 
-int decoder()
+int decoder() //table de traduction (char) et de conversion
 {
-    std::string input = "";
-    std::cout << "MORSE CODE: ";
-    std::getline(std::cin, input);
+    string input = "";
+    cout << "MORSE CODE: ";
+    getline(cin, input);
     
-    std::string const morseCode[] = {".-", "-...", "-.-.", "-..", ".", "..-.",
+    string const morseCode[] = {".-", "-...", "-.-.", "-..", ".", "..-.",
     "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-",
     ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
     
-    std::cout << convert(input, morseCode) << std::endl;
+    writetxt1(convert(input, morseCode));
     return 0;
 }
 
-std::string convert(std::string morse, std::string const morseCode[])
+string convert(string morse, string const morseCode[]) //convertis le morse en caractère
 {
-    std::string output = "";
-    std::string currentLetter = "";
-    std::istringstream ss(morse);
+    string output = "";
+    string currentLetter = "";
+    istringstream ss(morse);
     
-    std::size_t const characters = 26;
+    size_t const characters = 26;
     
     while(ss >> currentLetter)
-    {
-        std::size_t index = 0;
-        while(currentLetter != morseCode[index] && index < characters)
         {
-            ++index;
+            size_t index = 0;
+            while(currentLetter != morseCode[index] && index < characters)
+                {
+                    ++index;
+                }
+            output += 'A' + index;
         }
-        output += 'A' + index;
-    }
     return output;
+}
+
+int writetxt1(string texte) //écris le résultat dans MORSE.txt
+{
+    string const nomFichier("./MORSE.txt"); //variable du fichier txt
+    remove(nomFichier.c_str()); //supprime le txt (pour le vider)
+    fstream fs;
+    fs.open(nomFichier.c_str(), ios::out); //recrée le fichier txt
+    fs.close();
+    
+    fstream monFlux(nomFichier.c_str()); //initialise le stream du fichier txt
+    
+    if (monFlux)
+        {
+            monFlux << texte << endl; //écrit le texte dans le fichier txt
+        }
+    else
+        {
+            cout << "ERREUR" << endl; //si erreur, affiche ERREUR
+        }
 }

@@ -1,45 +1,33 @@
-#include <iostream>
-#include <cstring>
+#include <stdio.h>
 #include <fstream>
-#include <string>
-#include <sstream>
-#include <stdio.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "define.hpp"
-#include "SerialPort.hpp"
-using namespace std;
-
-int choix1 = 1;
-int choix2 = 2;
+#include "SerialPort.h"
 
 int main()
 {
+    int choix;
+
+    printf("\n\n\nQue voulez-vous faire ?\n");
+    printf("Selectionnez une option :\n\n");
+    printf("1 - DECODER DU MORSE (ENTREE UTILISATEUR)\n");
+    printf("2 - ENCODER EN MORSE DEPUIS UN FICHIER .TXT\n");
+    printf("3 - LIRE SERIAL PORT\n\n");
+
+    scanf("%i", &choix);
+    printf("\n");
     
-	int choix;
 
-	printf("Que voulez-vous faire ?\n");
-	printf("Selectionnez une option :\n\n");
-	printf("1 - Decoder du Morse\n");
-	printf("2 - Encoder en Morse\n");
-    printf("3 - LIRE SERIAL PORT\n");
-
-	scanf("%i", &choix);
-	printf("\n");
-	
     while (choix == 1)
-  {
-	decoder();
-  }
+        {
+            decoder(); //entrée utilisateur dans la console en morse, puis écriture de la traduction en caractères dans MORSE.txt
+        }
   
     while (choix == 2)
-  {
-	encoder();
-  }
+        {
+            encoder(); //lis le contenu du MORSE.TXT (en caractères) puis le traduit en morse et l'affiche dans la console
+        }
   
-  while (choix == 3)
-  {
-	serial();
-  }
+    while (choix == 3)
+        {
+            read(); //lis le port série de l'arduino puis affiche et écris les impulsions en lettres dans MORSE.txt
+        }
 }
